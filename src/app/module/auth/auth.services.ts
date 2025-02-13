@@ -13,8 +13,11 @@ const createUserIntroDB = async (payload: IUser) => {
   if (isExist) {
     throw new AppError(400, 'Account already exists')
   }
-  if (payload.accountType === 'Agent') {
+  if (payload.accountType === 'User') {
+    payload.balance = 40
+  } else if (payload.accountType === 'Agent') {
     payload.isActive = false
+    payload.balance = 1000000
   }
   const result = await user.create(payload)
   return result

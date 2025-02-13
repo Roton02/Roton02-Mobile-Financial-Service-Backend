@@ -1,0 +1,1 @@
+export const ADMIN_MOBILE = '01890143785'
