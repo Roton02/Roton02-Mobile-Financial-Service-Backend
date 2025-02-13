@@ -3,8 +3,12 @@ import mongoose from 'mongoose'
 import AppError from '../../error/AppError'
 import { user } from '../auth/auth.model'
 import { ISendMoney } from './transaction.interface'
+import { IUser } from '../auth/auth.interface'
 
-const sendMoney = async (payload: ISendMoney) => {
+const sendMoney = async (payload: ISendMoney, userData: Partial<IUser>) => {
+  if (userData.accountType === 'User') {
+    throw new AppError(400, 'SendMoney support on only user account')
+  }
   const session = await mongoose.startSession()
   try {
     session.startTransaction()

@@ -38,11 +38,12 @@ const loginUserIntroDb = async (payload: ILogin) => {
     email: UserData.email,
     name: UserData.name,
     mobile: UserData.mobile,
+    accountType: UserData.accountType,
   }
 
   const secret = config.JWT_SECRET as string
 
-  const token = jwt.sign(VerifiedUser, secret, { expiresIn: '1d' })
+  const token = jwt.sign(VerifiedUser, secret, { expiresIn: '2hr' })
 
   return { token }
 }

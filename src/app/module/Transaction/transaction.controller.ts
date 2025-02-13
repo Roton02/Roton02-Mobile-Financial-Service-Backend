@@ -5,7 +5,9 @@ import { tracsactionServices } from './transaction.service'
 
 const sendMoney = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body
-  const result = await tracsactionServices.sendMoney(payload)
+  const { user } = req
+  // console.log({ user })
+  const result = await tracsactionServices.sendMoney(payload, user)
   sendResponse(res, {
     statusCode: 201,
     success: true,

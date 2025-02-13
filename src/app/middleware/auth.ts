@@ -10,18 +10,17 @@ import AppError from '../error/AppError'
 const auth = (...requiredRole: string[]) => {
   // console.log('auth middleware triggered ')
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // console.log('auth middleware inside ')
-    const extractedToken = req.headers.authorization
-    const token = (extractedToken as string).split(' ')[1]
+    console.log('auth middleware inside ')
+    const { token } = req.cookies
 
     if (!token) {
       throw new AppError(400, 'You are not authorized to access')
     }
     // check if the token is valid
     const decoded = jwt.verify(token, config.JWT_SECRET as string) as JwtPayload
-    const { email, role } = decoded
+    const { email, mobile, accountType: role } = decoded
 
-    const userData = await user.findOne({ email: email })
+    const userData = await user.findOne({ email: email, mobile: mobile })
     // check user already exit
     if (!userData) {
       throw new AppError(404, 'User is not found')
