@@ -13,7 +13,8 @@ const userSchema = new Schema<IUser>(
       minlength: 5,
       maxlength: 5,
     }, // 5 digit PIN
-    mobile: { type: String, required: true, unique: true, trim: true }, // Mobile number (Unique)
+    mobile: { type: String, required: true, unique: true, trim: true },
+    balance: { type: Number, default: 0 },
     email: { type: String, required: true, unique: true, trim: true },
     accountType: { type: String, enum: ['Agent', 'User'], required: true }, // Dropdown with fixed values
     nid: { type: String, required: true, unique: true, trim: true }, // National ID (Unique)
