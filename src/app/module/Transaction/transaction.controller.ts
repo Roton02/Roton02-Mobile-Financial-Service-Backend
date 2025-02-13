@@ -28,5 +28,17 @@ const cashOut = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const cashIn = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body
+  const { user } = req as JwtPayload
+  // console.log({ user })
+  const result = await tracsactionServices.cashIn(payload, user)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Money sent successfully',
+    data: result,
+  })
+})
 
-export const transactionControllers = { sendMoney, cashOut }
+export const transactionControllers = { sendMoney, cashOut, cashIn }

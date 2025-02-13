@@ -6,6 +6,7 @@ export interface IUser {
   accountType: 'Agent' | 'User'
   nid: string
   balance?: number
+  income?: number
   isBlocked?: boolean
   isDeleted?: boolean
   isActive?: boolean

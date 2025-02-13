@@ -13,11 +13,20 @@ const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
   if (!receiver) {
     throw new AppError(404, 'Receiver not found')
   }
-
+  if (receiver.isBlocked) {
+    throw new AppError(400, 'Receiver account is blocked')
+  }
   // check Sender
   const sender = await user.findOne({ mobile: userData.mobile })
   if (!sender) {
     throw new AppError(404, 'Sender not found')
+  }
+  if (sender.isBlocked) {
+    throw new AppError(400, 'Sender account is blocked')
+  }
+  const isPinMatch = await bcrypt.compare(payload.pin, sender.pin)
+  if (!isPinMatch) {
+    throw new AppError(401, 'Invalid PIN')
   }
 
   // ✅ সর্বনিম্ন ৫০ টাকা পাঠানো যাচ্ছি কি না চেক করুন
@@ -80,6 +89,9 @@ const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
   if (!sender) {
     throw new AppError(404, 'User not found')
   }
+  if (sender.isBlocked) {
+    throw new AppError(400, 'Sender account is blocked')
+  }
 
   // Pin ki thik ace ni ?
   const isPinMatch = await bcrypt.compare(payload.pin, sender.pin)
@@ -91,6 +103,9 @@ const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
   const agent = await user.findOne({ mobile: payload.receiverNumber })
   if (!agent || agent.accountType !== 'Agent') {
     throw new AppError(400, 'Cash-out sudu agent diye parben ')
+  }
+  if (agent.isBlocked) {
+    throw new AppError(400, 'agent account is blocked')
   }
 
   // TK ache ni
@@ -141,4 +156,57 @@ const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
   }
 }
 
-export const tracsactionServices = { sendMoney, cashOut }
+const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
+  // ১. এজেন্ট এক্সিস্ট করছে কিনা চেক করা
+  const agent = await user.findOne({ mobile: agentData.mobile }).select('+pin')
+  if (!agent || agent.accountType !== 'Agent') {
+    throw new AppError(
+      400,
+      'Only authorized agents can perform cash-in transactions'
+    )
+  }
+  // ২. এজেন্টের পিন চেক করা
+  const isPinMatch = await bcrypt.compare(payload.pin, agent.pin)
+  if (!isPinMatch) {
+    throw new AppError(401, 'Invalid PIN')
+  }
+
+  // ৩. ইউজার এক্সিস্ট করছে কিনা চেক করা
+  const receiver = await user.findOne({ mobile: payload.receiverNumber })
+  if (!receiver) {
+    throw new AppError(404, 'User not found')
+  }
+
+  // ৪. ট্রানজেকশন শুরু করা
+  const session = await mongoose.startSession()
+  session.startTransaction()
+
+  try {
+    // ইউজারের ব্যালেন্স বাড়ানো
+    await user.findOneAndUpdate(
+      { mobile: payload.receiverNumber },
+      { $inc: { balance: payload.amount } },
+      { session }
+    )
+
+    // মোট সিস্টেম মানি আপডেট করা
+    // await system.findOneAndUpdate(
+    //   {},
+    //   { $inc: { totalMoney: payload.amount } },
+    //   { session }
+    // )
+
+    // ট্রানজেকশন সফল হলে কমিট করা
+    await session.commitTransaction()
+    session.endSession()
+
+    return { message: 'Cash-in successful' }
+  } catch (error: any) {
+    // কোনো সমস্যা হলে ট্রানজেকশন বাতিল করা
+    await session.abortTransaction()
+    session.endSession()
+    throw new AppError(400, error.message)
+  }
+}
+
+export const tracsactionServices = { sendMoney, cashOut, cashIn }

@@ -16,6 +16,7 @@ const userSchema = new Schema<IUser>(
     mobile: { type: String, required: true, unique: true, trim: true },
     isActive: { type: Boolean, default: true },
     balance: { type: Number, default: 0 },
+    income: { type: Number, default: 0 },
     email: { type: String, required: true, unique: true, trim: true },
     accountType: { type: String, enum: ['Agent', 'User'], required: true }, // Dropdown with fixed values
     nid: { type: String, required: true, unique: true, trim: true }, // National ID (Unique)
