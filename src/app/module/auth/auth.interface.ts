@@ -8,6 +8,7 @@ export interface IUser {
   balance?: number
   isBlocked?: boolean
   isDeleted?: boolean
+  isActive?: boolean
 }
 
 export interface ILogin {

@@ -14,6 +14,7 @@ const userSchema = new Schema<IUser>(
       maxlength: 5,
     }, // 5 digit PIN
     mobile: { type: String, required: true, unique: true, trim: true },
+    isActive: { type: Boolean, default: true },
     balance: { type: Number, default: 0 },
     email: { type: String, required: true, unique: true, trim: true },
     accountType: { type: String, enum: ['Agent', 'User'], required: true }, // Dropdown with fixed values

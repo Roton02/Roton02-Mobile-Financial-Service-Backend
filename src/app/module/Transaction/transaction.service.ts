@@ -3,21 +3,21 @@ import mongoose from 'mongoose'
 import AppError from '../../error/AppError'
 import { user } from '../auth/auth.model'
 import { ISendMoney } from './transaction.interface'
-import { IUser } from '../auth/auth.interface'
+import { JwtPayload } from 'jsonwebtoken'
 
-const sendMoney = async (payload: ISendMoney, userData: Partial<IUser>) => {
-  if (userData.accountType === 'User') {
+const sendMoney = async (payload: ISendMoney, userData: JwtPayload) => {
+  const isReciverExist = await user.findOne({
+    mobile: payload.receiverNumber,
+  })
+  if (!isReciverExist) {
+    throw new Error('Receiver not found')
+  }
+  if (payload.amount < 50) {
     throw new AppError(400, 'SendMoney support on only user account')
   }
   const session = await mongoose.startSession()
   try {
     session.startTransaction()
-    const isReciverExist = await user.findOne({
-      mobile: payload.receiverNumber,
-    })
-    if (!isReciverExist) {
-      throw new Error('Receiver not found')
-    }
     // const senderDescrement = await
     const result = await user.findOneAndUpdate(
       { mobile: payload.receiverNumber },
