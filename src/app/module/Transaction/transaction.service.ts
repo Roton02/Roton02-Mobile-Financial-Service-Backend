@@ -2,18 +2,16 @@
 import mongoose from 'mongoose'
 import AppError from '../../error/AppError'
 import { user } from '../auth/auth.model'
-import { ISendMoney } from './transaction.interface'
 import { JwtPayload } from 'jsonwebtoken'
+import { ITransaction } from './transaction.interface'
+import { cheeckReciver } from './transaction.utils'
 
-const sendMoney = async (payload: ISendMoney, userData: JwtPayload) => {
-  const isReciverExist = await user.findOne({
-    mobile: payload.receiverNumber,
-  })
-  if (!isReciverExist) {
-    throw new Error('Receiver not found')
-  }
-  if (payload.amount < 50) {
-    throw new AppError(400, 'SendMoney support on only user account')
+const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
+  cheeckReciver(payload.receiverNumber)
+  //TODO: check if sender has enough balance
+  const sender = await user.findOne({ mobile: userData.mobile })
+  if (payload.amount >= 100) {
+    const moneyWithFee = payload.amount + payload.amount * 0.01
   }
   const session = await mongoose.startSession()
   try {
@@ -34,4 +32,13 @@ const sendMoney = async (payload: ISendMoney, userData: JwtPayload) => {
   }
 }
 
-export const tracsactionServices = { sendMoney }
+const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
+  const isReciverExist = await user.findOne({
+    mobile: payload.receiverNumber,
+  })
+  if (!isReciverExist) {
+    throw new Error('Receiver not found')
+  }
+}
+
+export const tracsactionServices = { sendMoney, cashOut }

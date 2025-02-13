@@ -7,5 +7,8 @@ const sendMoneyValidation = z.object({
     .positive()
     .min(50, { message: 'Amount should be greater than 49' }),
 })
-
-export const transactionValidations = { sendMoneyValidation }
+const cashOutValidation = z.object({
+  receiverNumber: z.string().nonempty(),
+  amount: z.number().positive(),
+})
+export const transactionValidations = { sendMoneyValidation, cashOutValidation }
