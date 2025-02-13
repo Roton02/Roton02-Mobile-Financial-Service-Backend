@@ -16,6 +16,7 @@ UserRouter.post(
   validateRequest(userAuthValidation.loginValidation),
   authControllers.loginUser
 )
-UserRouter.get('/users', auth(), authControllers.getUsers)
+UserRouter.patch('/auth/:ID', auth('Admin'), authControllers.updateAccount)
+UserRouter.get('/users', auth('Admin'), authControllers.getUsers)
 
 export default UserRouter

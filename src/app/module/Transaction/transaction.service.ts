@@ -6,6 +6,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { ITransaction } from './transaction.interface'
 import { ADMIN_MOBILE } from './transaction.const'
 import bcrypt from 'bcryptjs'
+import Transaction from './transaction.model'
 
 const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
   // check Receiver
@@ -144,6 +145,18 @@ const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
       { $inc: { balance: adminIncome } },
       { session }
     )
+    const transaction = new Transaction({
+      sender: sender.mobile,
+      receiver: agent.mobile,
+      amount: payload.amount,
+      fee: cashOutFee,
+      agentIncome,
+      adminIncome,
+      transactionType: 'Cash Out',
+      timestamp: new Date(),
+    })
+
+    await transaction.save({ session })
 
     await session.commitTransaction()
     session.endSession()
@@ -207,6 +220,10 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
     session.endSession()
     throw new AppError(400, error.message)
   }
+}
+
+const getTransactionsIntoDB = async (userData: JwtPayload) => { 
+  
 }
 
 export const tracsactionServices = { sendMoney, cashOut, cashIn }

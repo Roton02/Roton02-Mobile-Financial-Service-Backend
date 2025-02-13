@@ -40,9 +40,20 @@ const getUsers = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const updateAccount = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.ID
+  const result = await userServcies.updateUserIntroDB(id)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'User update successfully',
+    data: result,
+  })
+})
 
 export const authControllers = {
   createUser,
   loginUser,
   getUsers,
+  updateAccount,
 }

@@ -54,6 +54,11 @@ const loginUserIntroDb = async (payload: ILogin) => {
   return { token }
 }
 
+const updateUserIntroDB = async (id: string) => {
+  const result = await user.findByIdAndUpdate(id, { isBlocked: true })
+  return result
+}
+
 const getUserIntroDB = async () => {
   const result = await user.find().select('-password')
   return result
@@ -63,4 +68,5 @@ export const userServcies = {
   createUserIntroDB,
   loginUserIntroDb,
   getUserIntroDB,
+  updateUserIntroDB,
 }
