@@ -74,4 +74,71 @@ const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
   }
 }
 
+const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
+  // User check kora lagbe
+  const sender = await user.findOne({ mobile: userData.mobile }).select('+pin')
+  if (!sender) {
+    throw new AppError(404, 'User not found')
+  }
+
+  // Pin ki thik ace ni ?
+  const isPinMatch = await bcrypt.compare(payload.pin, sender.pin)
+  if (!isPinMatch) {
+    throw new AppError(401, 'Invalid PIN')
+  }
+
+  // Agent achi naki ?
+  const agent = await user.findOne({ mobile: payload.receiverNumber })
+  if (!agent || agent.accountType !== 'Agent') {
+    throw new AppError(400, 'Cash-out sudu agent diye parben ')
+  }
+
+  // TK ache ni
+  if (sender.balance! < payload.amount) {
+    throw new AppError(400, 'Insufficient balance')
+  }
+
+  // total 1.5% , tar modde agent pabe 1% r admin paibo 0.5%
+  const cashOutFee = payload.amount * 0.015
+  const agentIncome = payload.amount * 0.01
+  const adminIncome = payload.amount * 0.005
+  const totalDeduction = payload.amount + cashOutFee
+
+  // transaction and roolback
+  const session = await mongoose.startSession()
+  session.startTransaction()
+
+  try {
+    // decrement user ballanse
+    await user.findOneAndUpdate(
+      { mobile: userData.mobile },
+      { $inc: { balance: -totalDeduction } },
+      { session }
+    )
+
+    //increment agent ballance
+    await user.findOneAndUpdate(
+      { mobile: payload.receiverNumber },
+      { $inc: { balance: payload.amount, income: agentIncome } },
+      { session }
+    )
+
+    // add income in admin
+    await user.findOneAndUpdate(
+      { accountType: 'Admin' },
+      { $inc: { balance: adminIncome } },
+      { session }
+    )
+
+    await session.commitTransaction()
+    session.endSession()
+
+    return { message: 'Cash-out successful' }
+  } catch (error: any) {
+    await session.abortTransaction()
+    session.endSession()
+    throw new AppError(400, error.message)
+  }
+}
+
 export const tracsactionServices = { sendMoney, cashOut }
