@@ -12,7 +12,7 @@ const transactionSchema = new Schema<TTransaction>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 )
 
 const Transaction = mongoose.model<TTransaction>(
@@ -22,19 +22,22 @@ const Transaction = mongoose.model<TTransaction>(
 
 export default Transaction
 
-const RequestSchema = new Schema<IRequest>({
-  agent: { type: String, required: true },
-  type: {
-    type: String,
-    enum: ['Cash Request', 'Withdraw Request'],
-    required: true,
+const RequestSchema = new Schema<IRequest>(
+  {
+    agent: { type: String, required: true },
+    type: {
+      type: String,
+      enum: ['Cash Request', 'Withdraw Request'],
+      required: true,
+    },
+    amount: { type: Number, default: 1000000, max: 1000000 },
+    status: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Rejected'],
+      default: 'Pending',
+    },
   },
-  amount: { type: Number, default: 1000000, max: 1000000 },
-  status: {
-    type: String,
-    enum: ['Pending', 'Approved', 'Rejected'],
-    default: 'Pending',
-  },
-})
+  { timestamps: true, versionKey: false }
+)
 
 export const Request = mongoose.model<IRequest>('Request', RequestSchema)
