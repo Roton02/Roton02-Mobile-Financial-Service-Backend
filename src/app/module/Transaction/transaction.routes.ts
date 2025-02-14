@@ -54,5 +54,15 @@ TransactionRouter.patch(
   auth('Admin'),
   transactionControllers.approveWithdrawRequest
 )
+TransactionRouter.get(
+  '/getAllWithdrawRequest',
+  auth('Admin'),
+  transactionControllers.getAllWithdrawRequest
+)
+TransactionRouter.get(
+  '/getAllCashRequest',
+  auth('Admin'),
+  transactionControllers.getAllCashRequest
+)
 
 export default TransactionRouter

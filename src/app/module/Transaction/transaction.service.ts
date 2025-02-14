@@ -211,10 +211,10 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
       { session }
     )
 
-    // মোট সিস্টেম মানি আপডেট করা
+    //
     await user.findOneAndUpdate(
-      {},
-      { $inc: { totalMoney: payload.amount } },
+      { mobile: agent.mobile },
+      { $inc: { totalMoney: -payload.amount } },
       { session }
     )
 
@@ -371,6 +371,14 @@ const approveCashRequestIntoDB = async (id: string, status: string) => {
     throw new AppError(400, error.message)
   }
 }
+const getAllWithdrawRequestIntoDB = async () => {
+  const requests = await Request.find({ type: 'Withdraw Request' })
+  return requests
+}
+const getAllCashRequestIntoDB = async () => {
+  const requests = await Request.find({ type: 'Cash Request' })
+  return requests
+}
 export const tracsactionServices = {
   sendMoney,
   cashOut,
@@ -381,4 +389,6 @@ export const tracsactionServices = {
   withdrawRequestIntoDB,
   approveWithDrawRequestIntoDB,
   approveCashRequestIntoDB,
+  getAllWithdrawRequestIntoDB,
+  getAllCashRequestIntoDB,
 }

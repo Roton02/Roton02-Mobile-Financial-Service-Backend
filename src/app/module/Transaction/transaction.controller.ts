@@ -116,6 +116,26 @@ const approveWithdrawRequest = catchAsync(
     })
   }
 )
+const getAllCashRequest = catchAsync(async (req: Request, res: Response) => {
+  const result = await tracsactionServices.getAllCashRequestIntoDB()
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'get All CashRequest successfully!',
+    data: result,
+  })
+})
+const getAllWithdrawRequest = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await tracsactionServices.getAllWithdrawRequestIntoDB()
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: 'get All withdraw successfully!',
+      data: result,
+    })
+  }
+)
 
 export const transactionControllers = {
   sendMoney,
@@ -127,4 +147,6 @@ export const transactionControllers = {
   withdrawRequest,
   approveWithdrawRequest,
   approveCashRequest,
+  getAllCashRequest,
+  getAllWithdrawRequest,
 }
