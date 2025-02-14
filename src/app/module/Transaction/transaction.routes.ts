@@ -5,6 +5,11 @@ import { transactionValidations } from './transaction.validation'
 import { transactionControllers } from './transaction.controller'
 
 const TransactionRouter = Router()
+TransactionRouter.get(
+  '/',
+  auth('Agent', 'Admin', 'User'),
+  transactionControllers.getTransactions
+)
 
 TransactionRouter.post(
   '/sendMoney',
@@ -23,11 +28,6 @@ TransactionRouter.post(
   validateRequest(transactionValidations.cashOutValidation),
   auth('Agent'),
   transactionControllers.cashOut
-)
-TransactionRouter.get(
-  '/transaction',
-  auth('Agent', 'Admin', 'User'),
-  transactionControllers.getTransactions
 )
 
 export default TransactionRouter

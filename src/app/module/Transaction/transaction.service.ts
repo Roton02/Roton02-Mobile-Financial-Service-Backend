@@ -75,6 +75,16 @@ const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
     // ✅ Transaction কমিট করুন
     await session.commitTransaction()
     await session.endSession()
+    const transaction = new Transaction({
+      sender: sender.mobile,
+      receiver: receiver.mobile,
+      amount: payload.amount,
+      fee: sendFee,
+      transactionType: 'SendMoney',
+      timestamp: new Date(),
+    })
+
+    await transaction.save({ session })
 
     return { message: 'Transaction successful', amount: payload.amount }
   } catch (error: any) {
@@ -150,8 +160,6 @@ const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
       receiver: agent.mobile,
       amount: payload.amount,
       fee: cashOutFee,
-      agentIncome,
-      adminIncome,
       transactionType: 'Cash Out',
       timestamp: new Date(),
     })
@@ -212,6 +220,15 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
     // ট্রানজেকশন সফল হলে কমিট করা
     await session.commitTransaction()
     session.endSession()
+    const transaction = new Transaction({
+      sender: agent.mobile,
+      receiver: receiver.mobile,
+      amount: payload.amount,
+      transactionType: 'CashIn',
+      timestamp: new Date(),
+    })
+
+    await transaction.save({ session })
 
     return { message: 'Cash-in successful' }
   } catch (error: any) {
@@ -222,8 +239,27 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
   }
 }
 
-const getTransactionsIntoDB = async (userData: JwtPayload) => { 
-  
+const getTransactionsIntoDB = async (userData: JwtPayload) => {
+  if (userData.accountType === 'User') {
+    const transactions = await Transaction.find({
+      $or: [{ sender: userData.mobile }, { receiver: userData.mobile }],
+    }).limit(100)
+    return transactions
+  } else if (userData.accountType === 'Agent') {
+    const transactions = await Transaction.find({
+      $or: [{ sender: userData.mobile }, { receiver: userData.mobile }],
+    }).limit(100)
+    return transactions
+  } else if (userData.accountType === 'Admin') {
+    const transactions = await Transaction.find()
+    return transactions
+  }
+  return []
 }
 
-export const tracsactionServices = { sendMoney, cashOut, cashIn }
+export const tracsactionServices = {
+  sendMoney,
+  cashOut,
+  cashIn,
+  getTransactionsIntoDB,
+}

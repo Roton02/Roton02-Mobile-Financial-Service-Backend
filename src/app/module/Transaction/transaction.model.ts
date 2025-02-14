@@ -6,7 +6,7 @@ const transactionSchema = new Schema<TTransaction>(
     sender: { type: String, required: true },
     receiver: { type: String, required: true },
     amount: { type: Number, required: true },
-    fee: { type: Number, required: true },
+    fee: { type: Number },
     transactionType: {
       type: String,
       required: true,

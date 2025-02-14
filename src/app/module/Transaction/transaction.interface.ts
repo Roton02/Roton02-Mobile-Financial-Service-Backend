@@ -8,6 +8,6 @@ export type TTransaction = {
   sender: string
   receiver: string
   amount: number
-  fee: number
+  fee?: number
   transactionType: string
 }
