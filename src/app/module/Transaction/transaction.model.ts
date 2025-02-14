@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
-import { TTransaction } from './transaction.interface'
+import { IRequest, TTransaction } from './transaction.interface'
 
 const transactionSchema = new Schema<TTransaction>(
   {
@@ -21,3 +21,21 @@ const Transaction = mongoose.model<TTransaction>(
 )
 
 export default Transaction
+
+const RequestSchema = new Schema<IRequest>({
+  agent: { type: String, required: true },
+  type: {
+    type: String,
+    enum: ['Cash Request', 'Withdraw Request'],
+    required: true,
+  },
+  amount: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ['Pending', 'Approved', 'Rejected'],
+    default: 'Pending',
+  },
+  createdAt: { type: Date, default: Date.now },
+})
+
+export const Request = mongoose.model<IRequest>('Request', RequestSchema)

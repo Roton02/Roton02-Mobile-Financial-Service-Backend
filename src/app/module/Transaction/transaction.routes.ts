@@ -24,13 +24,13 @@ TransactionRouter.post(
 )
 TransactionRouter.post(
   '/cashOut',
-  validateRequest(transactionValidations.cashOutValidation),
+  validateRequest(transactionValidations.cashOutInValidation),
   auth('User'),
   transactionControllers.cashOut
 )
 TransactionRouter.post(
   '/cashIn',
-  validateRequest(transactionValidations.cashOutValidation),
+  validateRequest(transactionValidations.cashOutInValidation),
   auth('Agent'),
   transactionControllers.cashOut
 )

@@ -11,3 +11,10 @@ export type TTransaction = {
   fee?: number
   transactionType: string
 }
+
+export interface IRequest {
+  agent: string
+  type: 'Cash Request' | 'Withdraw Request'
+  amount: number
+  status: 'Pending' | 'Approved' | 'Rejected'
+}
