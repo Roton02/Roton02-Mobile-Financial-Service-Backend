@@ -263,11 +263,18 @@ const getTransactionsIntoDB = async (userData: JwtPayload) => {
   return []
 }
 
-const cashRequestIntoDB = async (userData: JwtPayload, amount: number) => {
+const cashRequestIntoDB = async (
+  userData: JwtPayload,
+  body: { amount: number; pin: string }
+) => {
+  const verfifyPassword = await bcrypt.compare(body.pin, userData.pin)
+  if (!verfifyPassword) {
+    throw new AppError(401, 'Invalid PIN')
+  }
   const newRequest = new Request({
     agent: userData.mobile,
     type: 'Cash Request',
-    amount,
+    amount: body.amount,
     status: 'Pending',
   })
 

@@ -68,8 +68,8 @@ const getTransactions = catchAsync(async (req: Request, res: Response) => {
 const cashRequest = catchAsync(async (req: Request, res: Response) => {
   const { user } = req as JwtPayload
   // console.log({ user })
-  const { amount } = req.body
-  const result = await tracsactionServices.cashRequestIntoDB(user, amount)
+  const body = req.body
+  const result = await tracsactionServices.cashRequestIntoDB(user, body)
   sendResponse(res, {
     statusCode: 201,
     success: true,
