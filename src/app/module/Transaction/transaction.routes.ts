@@ -39,5 +39,20 @@ TransactionRouter.post(
   auth('Agent'),
   transactionControllers.cashRequest
 )
+TransactionRouter.post(
+  '/withdrawRequest',
+  auth('Agent'),
+  transactionControllers.withdrawRequest
+)
+TransactionRouter.patch(
+  '/approveCashRequest/:id',
+  auth('Admin'),
+  transactionControllers.approveCashRequest
+)
+TransactionRouter.patch(
+  '/approveWithdrawRequest/:id',
+  auth('Admin'),
+  transactionControllers.approveWithdrawRequest
+)
 
 export default TransactionRouter

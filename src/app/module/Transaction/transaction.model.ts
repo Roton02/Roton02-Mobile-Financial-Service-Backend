@@ -29,7 +29,7 @@ const RequestSchema = new Schema<IRequest>({
     enum: ['Cash Request', 'Withdraw Request'],
     required: true,
   },
-  amount: { type: Number, required: true },
+  amount: { type: Number, default: 1000000, max: 1000000 },
   status: {
     type: String,
     enum: ['Pending', 'Approved', 'Rejected'],

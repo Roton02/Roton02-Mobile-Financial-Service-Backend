@@ -73,10 +73,49 @@ const cashRequest = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 201,
     success: true,
-    message: 'Transaction retrieved successfully',
+    message: 'Cash request submitted successfully!',
     data: result,
   })
 })
+const withdrawRequest = catchAsync(async (req: Request, res: Response) => {
+  const { user } = req as JwtPayload
+  // console.log({ user })
+  const body = req.body
+  const result = await tracsactionServices.withdrawRequestIntoDB(user, body)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Withdraw request submitted successfully!',
+    data: result,
+  })
+})
+const approveCashRequest = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id
+  const body = req.body.isApproved
+  const result = await tracsactionServices.approveCashRequestIntoDB(id, body)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'cash Request approve successfully!',
+    data: result,
+  })
+})
+const approveWithdrawRequest = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id
+    const body = req.body.isApproved
+    const result = await tracsactionServices.approveWithDrawRequestIntoDB(
+      id,
+      body
+    )
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: 'Withdraw request approve successfully!',
+      data: result,
+    })
+  }
+)
 
 export const transactionControllers = {
   sendMoney,
@@ -85,4 +124,7 @@ export const transactionControllers = {
   getTransactions,
   getsingleUserTransaction,
   cashRequest,
+  withdrawRequest,
+  approveWithdrawRequest,
+  approveCashRequest,
 }

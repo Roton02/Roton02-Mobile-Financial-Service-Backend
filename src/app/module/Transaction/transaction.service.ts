@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from 'mongoose'
 import AppError from '../../error/AppError'
@@ -211,25 +212,25 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
     )
 
     // মোট সিস্টেম মানি আপডেট করা
-    // await system.findOneAndUpdate(
-    //   {},
-    //   { $inc: { totalMoney: payload.amount } },
-    //   { session }
-    // )
+    await user.findOneAndUpdate(
+      {},
+      { $inc: { totalMoney: payload.amount } },
+      { session }
+    )
 
     // ট্রানজেকশন সফল হলে কমিট করা
-    await session.commitTransaction()
-    session.endSession()
+
     const transaction = new Transaction({
       sender: agent.mobile,
       receiver: receiver.mobile,
       amount: payload.amount,
       transactionType: 'CashIn',
-      timestamp: new Date(),
     })
 
     await transaction.save({ session })
 
+    await session.commitTransaction()
+    session.endSession()
     return { message: 'Cash-in successful' }
   } catch (error: any) {
     // কোনো সমস্যা হলে ট্রানজেকশন বাতিল করা
@@ -273,7 +274,7 @@ const cashRequestIntoDB = async (
   }
   const newRequest = new Request({
     agent: userData.mobile,
-    type: 'Cash Request',
+    type: 'CashRequest',
     amount: body.amount,
     status: 'Pending',
   })
@@ -281,7 +282,95 @@ const cashRequestIntoDB = async (
   await newRequest.save()
   return { message: 'Cash request submitted successfully!' }
 }
+const withdrawRequestIntoDB = async (
+  userData: JwtPayload,
+  body: { amount: number; pin: string }
+) => {
+  const verfifyPassword = await bcrypt.compare(body.pin, userData.pin)
+  if (!verfifyPassword) {
+    throw new AppError(401, 'Invalid PIN')
+  }
+  const newRequest = new Request({
+    agent: userData.mobile,
+    type: 'WithdrawRequest',
+    amount: body.amount,
+    status: 'Pending',
+  })
 
+  await newRequest.save()
+  return { message: 'Withdraw request submitted successfully!' }
+}
+
+const approveWithDrawRequestIntoDB = async (id: string, status: boolean) => {
+  const withDrawOwner = await Request.findById(id)
+  if (!withDrawOwner) {
+    throw new AppError(404, 'User not found')
+  }
+  const session = await mongoose.startSession()
+  session.startTransaction()
+  try {
+    //if status is true then approve the request and descement main balance and change the status in the request database collection
+    if (status) {
+      await Request.findByIdAndUpdate(
+        id,
+        { status: 'Approved' },
+        { session, new: true }
+      )
+      await user.findByIdAndUpdate(
+        { id },
+        { $inc: { balance: -withDrawOwner.amount } },
+        { session }
+      )
+      return { message: 'withdraw Request approved successfully!' }
+    }
+    //if status is false then reject the request and change the status in the request database collection
+    if (!status) {
+      await Request.findByIdAndUpdate(id, { status: 'Rejected' }, { new: true })
+      return { message: ' with draw Request rejected successfully!' }
+    }
+    await session.commitTransaction()
+    session.endSession()
+  } catch (error: any) {
+    await session.abortTransaction()
+    session.endSession()
+    throw new AppError(400, error.message)
+  }
+}
+const approveCashRequestIntoDB = async (id: string, status: string) => {
+  const RequesteOwner = await Request.findById(id)
+  if (!RequesteOwner) {
+    throw new AppError(404, 'Request not found')
+  }
+  const session = await mongoose.startSession()
+  session.startTransaction()
+  try {
+    //if status is true then approve the request and descement main balance and change the status in the request database collection
+    if (status) {
+      await Request.findByIdAndUpdate(
+        id,
+        { status: 'Approved' },
+        { session, new: true }
+      )
+      await user.findByIdAndUpdate(
+        { id },
+        { $inc: { balance: RequesteOwner.amount } },
+        { session }
+      )
+      return { message: 'cash Request approved successfully!' }
+    }
+    //if status is false then reject the request and change the status in the request database collection
+    if (!status) {
+      await Request.findByIdAndUpdate(id, { status: 'Rejected' }, { new: true })
+      return { message: 'cash Request rejected successfully!' }
+    }
+    await session.commitTransaction()
+    session.endSession()
+  } catch (error: any) {
+    await session.abortTransaction()
+    session.endSession()
+    throw new AppError(400, error.message)
+  }
+}
 export const tracsactionServices = {
   sendMoney,
   cashOut,
@@ -289,4 +378,7 @@ export const tracsactionServices = {
   getTransactionsIntoDB,
   getsingleUserTransactionIntoDB,
   cashRequestIntoDB,
+  withdrawRequestIntoDB,
+  approveWithDrawRequestIntoDB,
+  approveCashRequestIntoDB,
 }
