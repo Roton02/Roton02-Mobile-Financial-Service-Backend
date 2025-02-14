@@ -10,7 +10,6 @@ const transactionSchema = new Schema<TTransaction>(
     transactionType: {
       type: String,
       required: true,
-      enum: ['Cash In', 'Cash Out'],
     },
   },
   { timestamps: true }

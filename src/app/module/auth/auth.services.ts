@@ -31,13 +31,20 @@ const loginUserIntroDb = async (payload: ILogin) => {
     .select('+pin')
 
   if (!UserData) {
-    throw new AppError(401, 'User is not Found P(invalid credentials)')
+    throw new AppError(401, 'User is not Found (invalid credentials)')
   }
   // console.log(UserData)
   const verifyPassword = await bcrypt.compare(payload.pin, UserData.pin)
 
   if (!verifyPassword) {
     throw new AppError(401, 'Invalid credentials')
+  }
+
+  if (UserData.isBlocked) {
+    throw new AppError(401, 'Account is blocked')
+  }
+  if (UserData.isActive === false) {
+    throw new AppError(401, 'Account is Deactivated')
   }
 
   const VerifiedUser = {
@@ -55,10 +62,26 @@ const loginUserIntroDb = async (payload: ILogin) => {
 }
 
 const updateUserIntroDB = async (id: string) => {
-  const result = await user.findByIdAndUpdate(id, { isBlocked: true })
+  const result = await user.findByIdAndUpdate(
+    id,
+    { isBlocked: true },
+    { new: true }
+  )
+  return result
+}
+const updateAgentStatusIntoDB = async (id: string, status: boolean) => {
+  const result = await user.findByIdAndUpdate(
+    id,
+    { isActive: status },
+    { new: true }
+  )
   return result
 }
 
+const getSingleUserIntoDB = async (mobile: string) => {
+  const result = await user.findOne({ mobile }).select('-password')
+  return result
+}
 const getUserIntroDB = async () => {
   const result = await user.find().select('-password')
   return result
@@ -69,4 +92,6 @@ export const userServcies = {
   loginUserIntroDb,
   getUserIntroDB,
   updateUserIntroDB,
+  getSingleUserIntoDB,
+  updateAgentStatusIntoDB,
 }

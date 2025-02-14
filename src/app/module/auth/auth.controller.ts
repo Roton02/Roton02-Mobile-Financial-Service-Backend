@@ -40,9 +40,31 @@ const getUsers = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const getSingleUsers = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.Number
+  const result = await userServcies.getSingleUserIntoDB(id)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'User retrived successfully',
+    data: result,
+  })
+})
 const updateAccount = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.ID
   const result = await userServcies.updateUserIntroDB(id)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'User update successfully',
+    data: result,
+  })
+})
+const updateAgentStatus = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.ID
+  const status = req.body.isActive
+  // console.log({ status })
+  const result = await userServcies.updateAgentStatusIntoDB(id, status)
   sendResponse(res, {
     statusCode: 201,
     success: true,
@@ -56,4 +78,6 @@ export const authControllers = {
   loginUser,
   getUsers,
   updateAccount,
+  getSingleUsers,
+  updateAgentStatus,
 }

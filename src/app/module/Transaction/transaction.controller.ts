@@ -40,6 +40,20 @@ const cashIn = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const getsingleUserTransaction = catchAsync(
+  async (req: Request, res: Response) => {
+    const number = req.params.number
+    // console.log({ user })
+    const result =
+      await tracsactionServices.getsingleUserTransactionIntoDB(number)
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: 'Transaction retrieved successfully',
+      data: result,
+    })
+  }
+)
 const getTransactions = catchAsync(async (req: Request, res: Response) => {
   const { user } = req as JwtPayload
   // console.log({ user })
@@ -57,4 +71,5 @@ export const transactionControllers = {
   cashOut,
   cashIn,
   getTransactions,
+  getsingleUserTransaction,
 }

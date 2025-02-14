@@ -6,6 +6,11 @@ import { transactionControllers } from './transaction.controller'
 
 const TransactionRouter = Router()
 TransactionRouter.get(
+  '/:number',
+  auth('Admin'),
+  transactionControllers.getsingleUserTransaction
+)
+TransactionRouter.get(
   '/',
   auth('Agent', 'Admin', 'User'),
   transactionControllers.getTransactions

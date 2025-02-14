@@ -72,9 +72,6 @@ const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
       )
     }
 
-    // ✅ Transaction কমিট করুন
-    await session.commitTransaction()
-    await session.endSession()
     const transaction = new Transaction({
       sender: sender.mobile,
       receiver: receiver.mobile,
@@ -86,6 +83,9 @@ const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
 
     await transaction.save({ session })
 
+    // ✅ Transaction কমিট করুন
+    await session.commitTransaction()
+    await session.endSession()
     return { message: 'Transaction successful', amount: payload.amount }
   } catch (error: any) {
     await session.abortTransaction()
@@ -239,6 +239,12 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
   }
 }
 
+const getsingleUserTransactionIntoDB = async (mobile: string) => {
+  const transactions = await Transaction.find({
+    $or: [{ sender: mobile }, { receiver: mobile }],
+  })
+  return transactions
+}
 const getTransactionsIntoDB = async (userData: JwtPayload) => {
   if (userData.accountType === 'User') {
     const transactions = await Transaction.find({
@@ -262,4 +268,5 @@ export const tracsactionServices = {
   cashOut,
   cashIn,
   getTransactionsIntoDB,
+  getsingleUserTransactionIntoDB,
 }
