@@ -6,7 +6,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { ITransaction } from './transaction.interface'
 import { ADMIN_MOBILE } from './transaction.const'
 import bcrypt from 'bcryptjs'
-import Transaction from './transaction.model'
+import Transaction, { Request } from './transaction.model'
 
 const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
   // check Receiver
@@ -263,10 +263,23 @@ const getTransactionsIntoDB = async (userData: JwtPayload) => {
   return []
 }
 
+const cashRequestIntoDB = async (userData: JwtPayload, amount: number) => {
+  const newRequest = new Request({
+    agent: userData.mobile,
+    type: 'Cash Request',
+    amount,
+    status: 'Pending',
+  })
+
+  await newRequest.save()
+  return { message: 'Cash request submitted successfully!' }
+}
+
 export const tracsactionServices = {
   sendMoney,
   cashOut,
   cashIn,
   getTransactionsIntoDB,
   getsingleUserTransactionIntoDB,
+  cashRequestIntoDB,
 }

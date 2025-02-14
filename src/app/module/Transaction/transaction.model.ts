@@ -35,7 +35,6 @@ const RequestSchema = new Schema<IRequest>({
     enum: ['Pending', 'Approved', 'Rejected'],
     default: 'Pending',
   },
-  createdAt: { type: Date, default: Date.now },
 })
 
 export const Request = mongoose.model<IRequest>('Request', RequestSchema)

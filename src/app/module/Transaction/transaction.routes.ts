@@ -34,5 +34,10 @@ TransactionRouter.post(
   auth('Agent'),
   transactionControllers.cashOut
 )
+TransactionRouter.post(
+  '/cashRequest',
+  auth('Agent'),
+  transactionControllers.cashRequest
+)
 
 export default TransactionRouter
