@@ -13,8 +13,8 @@ export type TTransaction = {
 }
 
 export interface IRequest {
-  agent: string
-  type: 'Cash Request' | 'Withdraw Request'
+  agent?: string
+  type?: 'Cash Request' | 'Withdraw Request'
   amount: number
-  status: 'Pending' | 'Approved' | 'Rejected'
+  status?: 'Pending' | 'Approved' | 'Rejected'
 }

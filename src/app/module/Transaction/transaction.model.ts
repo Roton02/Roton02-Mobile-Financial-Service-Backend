@@ -24,13 +24,11 @@ export default Transaction
 
 const RequestSchema = new Schema<IRequest>(
   {
-    agent: { type: String, required: true },
+    agent: { type: String },
     type: {
       type: String,
-      enum: ['Cash Request', 'Withdraw Request'],
-      required: true,
     },
-    amount: { type: Number, default: 1000000, max: 1000000 },
+    amount: { type: Number, default: 100000, max: 100000 },
     status: {
       type: String,
       enum: ['Pending', 'Approved', 'Rejected'],

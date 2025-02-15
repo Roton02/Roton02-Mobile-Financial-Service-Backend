@@ -4,6 +4,15 @@ import sendResponse from '../../utils/sendResponse'
 import { tracsactionServices } from './transaction.service'
 import { JwtPayload } from 'jsonwebtoken'
 
+const getTotalBallances = catchAsync(async (req: Request, res: Response) => {
+  const result = await tracsactionServices.getTotalBallancesIntoDB()
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Money sent successfully',
+    data: result,
+  })
+})
 const sendMoney = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body
   const { user } = req as JwtPayload
@@ -138,6 +147,7 @@ const getAllWithdrawRequest = catchAsync(
 )
 
 export const transactionControllers = {
+  getTotalBallances,
   sendMoney,
   cashOut,
   cashIn,

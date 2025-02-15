@@ -5,6 +5,22 @@ import { transactionValidations } from './transaction.validation'
 import { transactionControllers } from './transaction.controller'
 
 const TransactionRouter = Router()
+
+TransactionRouter.get(
+  '/getAllWithdrawRequest',
+  auth('Admin'),
+  transactionControllers.getAllWithdrawRequest
+)
+TransactionRouter.get(
+  '/getAllCashRequest',
+  auth('Admin'),
+  transactionControllers.getAllCashRequest
+)
+TransactionRouter.get(
+  '/totalBallances',
+  auth('Admin'),
+  transactionControllers.getTotalBallances
+)
 TransactionRouter.get(
   '/:number',
   auth('Admin'),
@@ -53,16 +69,6 @@ TransactionRouter.patch(
   '/approveWithdrawRequest/:id',
   auth('Admin'),
   transactionControllers.approveWithdrawRequest
-)
-TransactionRouter.get(
-  '/getAllWithdrawRequest',
-  auth('Admin'),
-  transactionControllers.getAllWithdrawRequest
-)
-TransactionRouter.get(
-  '/getAllCashRequest',
-  auth('Admin'),
-  transactionControllers.getAllCashRequest
 )
 
 export default TransactionRouter

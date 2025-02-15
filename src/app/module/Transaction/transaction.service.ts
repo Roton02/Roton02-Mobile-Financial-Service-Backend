@@ -9,6 +9,22 @@ import { ADMIN_MOBILE } from './transaction.const'
 import bcrypt from 'bcryptjs'
 import Transaction, { Request } from './transaction.model'
 
+const getTotalBallancesIntoDB = async () => {
+  const userBalance = await user.aggregate([
+    { $match: { accountType: 'User' } },
+    { $group: { _id: null, totalBalance: { $sum: '$balance' } } },
+  ])
+
+  const agentBalance = await user.aggregate([
+    { $match: { accountType: 'Agent' } },
+    { $group: { _id: null, totalBalance: { $sum: '$balance' } } },
+  ])
+
+  return (
+    (userBalance[0]?.totalBalance || 0) + (agentBalance[0]?.totalBalance || 0)
+  )
+}
+
 const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
   // check Receiver
   const receiver = await user.findOne({ mobile: payload.receiverNumber })
@@ -271,7 +287,11 @@ const cashRequestIntoDB = async (
   userData: JwtPayload,
   body: { amount: number; pin: string }
 ) => {
-  const verfifyPassword = await bcrypt.compare(body.pin, userData.pin)
+  const agent = await user.findOne({ mobile: userData.mobile }).select('+pin')
+  if (!agent) {
+    throw new AppError(404, 'Agent not found')
+  }
+  const verfifyPassword = await bcrypt.compare(body.pin, agent.pin)
   if (!verfifyPassword) {
     throw new AppError(401, 'Invalid PIN')
   }
@@ -354,12 +374,11 @@ const approveCashRequestIntoDB = async (id: string, status: string) => {
         { status: 'Approved' },
         { session, new: true }
       )
-      await user.findByIdAndUpdate(
-        { id },
-        { $inc: { balance: RequesteOwner.amount } },
+      await user.findOneAndUpdate(
+        { mobile: RequesteOwner.agent },
+        { $inc: { balance: RequesteOwner.amount || 100000 } },
         { session }
       )
-      return { message: 'cash Request approved successfully!' }
     }
     //if status is false then reject the request and change the status in the request database collection
     if (!status) {
@@ -368,6 +387,7 @@ const approveCashRequestIntoDB = async (id: string, status: string) => {
     }
     await session.commitTransaction()
     session.endSession()
+    // return { message: 'cash Request approved successfully!' }
   } catch (error: any) {
     await session.abortTransaction()
     session.endSession()
@@ -379,8 +399,8 @@ const getAllWithdrawRequestIntoDB = async () => {
   return requests
 }
 const getAllCashRequestIntoDB = async () => {
-  const requests = await Request.find({ type: 'Cash Request' })
-  return requests
+  const result = await Request.find({ type: 'CashRequest' })
+  return result
 }
 export const tracsactionServices = {
   sendMoney,
@@ -394,4 +414,5 @@ export const tracsactionServices = {
   approveCashRequestIntoDB,
   getAllWithdrawRequestIntoDB,
   getAllCashRequestIntoDB,
+  getTotalBallancesIntoDB,
 }
