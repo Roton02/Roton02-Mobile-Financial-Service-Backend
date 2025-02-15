@@ -68,7 +68,7 @@ const sendMoney = async (payload: ITransaction, userData: JwtPayload) => {
     if (sendFee > 0) {
       await user.findOneAndUpdate(
         { mobile: ADMIN_MOBILE },
-        { $inc: { balance: sendFee } },
+        { $inc: { income: sendFee } },
         { session }
       )
     }
@@ -118,6 +118,9 @@ const cashOut = async (payload: ITransaction, userData: JwtPayload) => {
   }
   if (agent.isBlocked) {
     throw new AppError(400, 'agent account is blocked')
+  }
+  if (!agent.isActive) {
+    throw new AppError(400, 'agent account is Deactivated')
   }
 
   // TK ache ni
@@ -214,7 +217,7 @@ const cashIn = async (payload: ITransaction, agentData: JwtPayload) => {
     //
     await user.findOneAndUpdate(
       { mobile: agent.mobile },
-      { $inc: { totalMoney: -payload.amount } },
+      { $inc: { balance: -payload.amount } },
       { session }
     )
 

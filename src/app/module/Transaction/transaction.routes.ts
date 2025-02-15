@@ -32,7 +32,7 @@ TransactionRouter.post(
   '/cashIn',
   validateRequest(transactionValidations.cashOutInValidation),
   auth('Agent'),
-  transactionControllers.cashOut
+  transactionControllers.cashIn
 )
 TransactionRouter.post(
   '/cashRequest',
