@@ -309,7 +309,11 @@ const withdrawRequestIntoDB = async (
   userData: JwtPayload,
   body: { amount: number; pin: string }
 ) => {
-  const verfifyPassword = await bcrypt.compare(body.pin, userData.pin)
+  const agent = await user.findOne({ mobile: userData.mobile }).select('+pin')
+  if (!agent) {
+    throw new AppError(404, 'Agent not found')
+  }
+  const verfifyPassword = await bcrypt.compare(body.pin, agent.pin)
   if (!verfifyPassword) {
     throw new AppError(401, 'Invalid PIN')
   }
@@ -339,12 +343,11 @@ const approveWithDrawRequestIntoDB = async (id: string, status: boolean) => {
         { status: 'Approved' },
         { session, new: true }
       )
-      await user.findByIdAndUpdate(
-        { id },
+      await user.findOneAndUpdate(
+        { mobile: withDrawOwner.agent },
         { $inc: { balance: -withDrawOwner.amount } },
         { session }
       )
-      return { message: 'withdraw Request approved successfully!' }
     }
     //if status is false then reject the request and change the status in the request database collection
     if (!status) {
@@ -353,6 +356,7 @@ const approveWithDrawRequestIntoDB = async (id: string, status: boolean) => {
     }
     await session.commitTransaction()
     session.endSession()
+    // return { message: 'withdraw Request approved successfully!' }
   } catch (error: any) {
     await session.abortTransaction()
     session.endSession()
