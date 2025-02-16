@@ -1,0 +1,834 @@
+{
+	"info": {
+		"_postman_id": "6e5855c7-a4c0-4181-9731-8f8715246c87",
+		"name": "MFS-System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39793006"
+	},
+	"item": [
+		{
+			"name": "Mobile banking",
+			"item": [
+				{
+					"name": "Transaction",
+					"item": [
+						{
+							"name": "SendMoney",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTczODU5ODYyNSwiZXhwIjoxNzM4NjAyMjI1fQ.yma8DugQInDMju_lNHjiQVm-f1rrjMoPLSNbhwxYSKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"receiverNumber\": \"01890143787\",\r\n    \"amount\": 100,\r\n    \"pin\":\"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/sendMoney",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"sendMoney"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cashOut",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTczODU5ODYyNSwiZXhwIjoxNzM4NjAyMjI1fQ.yma8DugQInDMju_lNHjiQVm-f1rrjMoPLSNbhwxYSKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"receiverNumber\": \"01890143781\",\r\n    \"amount\": 100,\r\n    \"pin\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/cashOut",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"cashOut"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cashIn",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTczODU5ODYyNSwiZXhwIjoxNzM4NjAyMjI1fQ.yma8DugQInDMju_lNHjiQVm-f1rrjMoPLSNbhwxYSKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"receiverNumber\": \"01890143786\",\r\n    \"amount\": 5000,\r\n    \"pin\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/cashIn",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"cashIn"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cash Requesrt",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTczODU5ODYyNSwiZXhwIjoxNzM4NjAyMjI1fQ.yma8DugQInDMju_lNHjiQVm-f1rrjMoPLSNbhwxYSKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"pin\" : \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/cashRequest",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"cashRequest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "withdraw request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTczODU5ODYyNSwiZXhwIjoxNzM4NjAyMjI1fQ.yma8DugQInDMju_lNHjiQVm-f1rrjMoPLSNbhwxYSKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\":100000,\r\n    \"pin\" : \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/withdrawRequest",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"withdrawRequest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-all-user/agent",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"roton\",\r\n    \"content\":\"habir mar jir biya \",\r\n    \"author\":\"6755ae1f5059cccbb1ccea88\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/users",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"users"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "himu",
+											"disabled": true
+										},
+										{
+											"key": "filter",
+											"value": "6755ae1f5059cccbb1ccea88",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "title",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "total-balance\\",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"roton\",\r\n    \"content\":\"habir mar jir biya \",\r\n    \"author\":\"6755ae1f5059cccbb1ccea88\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/totalBallances",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"totalBallances"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "himu",
+											"disabled": true
+										},
+										{
+											"key": "filter",
+											"value": "6755ae1f5059cccbb1ccea88",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "title",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET-single-user",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"roton\",\r\n    \"content\":\"habir mar jir biya \",\r\n    \"author\":\"6755ae1f5059cccbb1ccea88\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/users/01890143785",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"users",
+										"01890143785"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "himu",
+											"disabled": true
+										},
+										{
+											"key": "filter",
+											"value": "6755ae1f5059cccbb1ccea88",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "title",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-all-transaction",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"roton\",\r\n    \"content\":\"habir mar jir biya \",\r\n    \"author\":\"6755ae1f5059cccbb1ccea88\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										""
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "himu",
+											"disabled": true
+										},
+										{
+											"key": "filter",
+											"value": "6755ae1f5059cccbb1ccea88",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "title",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET-Single-transaction",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\":\"roton\",\r\n    \"content\":\"habir mar jir biya \",\r\n    \"author\":\"6755ae1f5059cccbb1ccea88\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/01569140343",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"01569140343"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "himu",
+											"disabled": true
+										},
+										{
+											"key": "filter",
+											"value": "6755ae1f5059cccbb1ccea88",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "title",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin-block-user",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzIwNjA3NSwiZXhwIjoxNzM3MjA5Njc1fQ.bpdrofrP_ECrMVZez8zZoJUcKPQlUdmwZTSX-K4jjC8",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/auth/67adbdc4b7e77f6139b9df3e",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"auth",
+										"67adbdc4b7e77f6139b9df3e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Agent-Aproved",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzIwNjA3NSwiZXhwIjoxNzM3MjA5Njc1fQ.bpdrofrP_ECrMVZez8zZoJUcKPQlUdmwZTSX-K4jjC8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isActive\" : true \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/AgentStatus/67af5c55c933c7a308ec6918",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"AgentStatus",
+										"67af5c55c933c7a308ec6918"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Approve cash-request",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzIwNjA3NSwiZXhwIjoxNzM3MjA5Njc1fQ.bpdrofrP_ECrMVZez8zZoJUcKPQlUdmwZTSX-K4jjC8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isApproved\" : true \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/approveCashRequest/67b03febea3ec77bebd6d0b6",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"approveCashRequest",
+										"67b03febea3ec77bebd6d0b6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Approve withdrawal request",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzIwNjA3NSwiZXhwIjoxNzM3MjA5Njc1fQ.bpdrofrP_ECrMVZez8zZoJUcKPQlUdmwZTSX-K4jjC8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isApproved\" : true \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/approveWithdrawRequest/67b0493472e4db9f627fcd5b",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"approveWithdrawRequest",
+										"67b0493472e4db9f627fcd5b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Cash-Request",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzIwNjA3NSwiZXhwIjoxNzM3MjA5Njc1fQ.bpdrofrP_ECrMVZez8zZoJUcKPQlUdmwZTSX-K4jjC8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isActive\" : false \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/getAllCashRequest",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"getAllCashRequest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get withdraw request",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzIwNjA3NSwiZXhwIjoxNzM3MjA5Njc1fQ.bpdrofrP_ECrMVZez8zZoJUcKPQlUdmwZTSX-K4jjC8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isActive\" : false \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/transaction/getAllWithdrawRequest",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"transaction",
+										"getAllWithdrawRequest"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Crete-user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Roton\",\r\n  \"pin\": \"12345\",\r\n  \"mobile\": \"01890143785\",\r\n  \"email\": \"admin@gmail.com\",\r\n  \"accountType\": \"Agent\",\r\n  \"nid\": \"111111111111\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://mobile-banking-tawny.vercel.app/api/auth/register",
+									"protocol": "https",
+									"host": [
+										"mobile-banking-tawny",
+										"vercel",
+										"app"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"identifier\": \"admin\r\n  @gmail.com\",\r\n  \"pin\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verify-token",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth/verify-token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth",
+										"verify-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"identifier\": \"admin\r\n  @gmail.com\",\r\n  \"pin\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
