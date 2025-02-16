@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { userServcies } from './auth.services'
 import catchAsync from '../../utils/catchAsync'
 import sendResponse from '../../utils/sendResponse'
+import AppError from '../../error/AppError'
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body
@@ -13,6 +14,19 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const logOut = catchAsync(async (req: Request, res: Response) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  })
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Logout successfully',
+    data: '',
+  })
+})
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body
   const { token } = await userServcies.loginUserIntroDb(payload)
@@ -20,8 +34,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   res.cookie('token', token, {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'none',
+    secure: true,
   })
 
   sendResponse(res, {
@@ -29,6 +43,21 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: 'User Login successfully',
     data: token,
+  })
+})
+const verifyToken = catchAsync(async (req: Request, res: Response) => {
+  // const token = req.cookies.token
+  const { token } = req.cookies
+
+  if (!token) {
+    throw new AppError(404, 'You are not authorized to access this route')
+  }
+  const result = await userServcies.verifyTokenIntroDB(token)
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'User retrived successfully',
+    data: result,
   })
 })
 const getUsers = catchAsync(async (req: Request, res: Response) => {
@@ -80,4 +109,6 @@ export const authControllers = {
   updateAccount,
   getSingleUsers,
   updateAgentStatus,
+  verifyToken,
+  logOut,
 }

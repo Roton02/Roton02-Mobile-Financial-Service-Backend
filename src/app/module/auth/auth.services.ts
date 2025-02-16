@@ -1,9 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import config from '../../config'
 import AppError from '../../error/AppError'
 import { ILogin, IUser } from './auth.interface'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { user } from './auth.model'
+import { jwtDecode } from 'jwt-decode'
+
+const verifyTokenIntroDB = async (token: string) => {
+  try {
+    const decoded = jwtDecode(token)
+    return { token, user: decoded }
+  } catch (error) {
+    return null // Return null instead of breaking execution
+  }
+}
 
 const createUserIntroDB = async (payload: IUser) => {
   const isExist = await user.findOne({
@@ -56,7 +67,7 @@ const loginUserIntroDb = async (payload: ILogin) => {
 
   const secret = config.JWT_SECRET as string
 
-  const token = jwt.sign(VerifiedUser, secret, { expiresIn: '2hr' })
+  const token = jwt.sign(VerifiedUser, secret, { expiresIn: '7d' })
 
   return { token }
 }
@@ -94,4 +105,5 @@ export const userServcies = {
   updateUserIntroDB,
   getSingleUserIntoDB,
   updateAgentStatusIntoDB,
+  verifyTokenIntroDB,
 }

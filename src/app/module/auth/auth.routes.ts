@@ -6,6 +6,8 @@ import { authControllers } from './auth.controller'
 
 const UserRouter = Router()
 
+UserRouter.get('/auth/verify-token', authControllers.verifyToken)
+UserRouter.post('/api/auth/logout', authControllers.logOut)
 UserRouter.post(
   '/auth/register',
   validateRequest(userAuthValidation.registrationValidation),
