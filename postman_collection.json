@@ -748,7 +748,8 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/login",
+									"raw": " https://mobile-banking-tawny.vercel.app
+/api/auth/login",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -781,7 +782,8 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/verify-token",
+									"raw": " https://mobile-banking-tawny.vercel.app
+/api/auth/verify-token",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -811,7 +813,8 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/auth/login",
+									"raw": " https://mobile-banking-tawny.vercel.app
+/api/auth/login",
 									"protocol": "http",
 									"host": [
 										"localhost"

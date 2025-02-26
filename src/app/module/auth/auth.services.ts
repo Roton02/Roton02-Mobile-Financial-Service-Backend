@@ -69,7 +69,7 @@ const loginUserIntroDb = async (payload: ILogin) => {
 
   const token = jwt.sign(VerifiedUser, secret, { expiresIn: '7d' })
 
-  return { token }
+  return { VerifiedUser, token }
 }
 
 const updateUserIntroDB = async (id: string) => {

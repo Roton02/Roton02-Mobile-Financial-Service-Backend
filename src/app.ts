@@ -12,7 +12,7 @@ app.use(cookieParser())
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Replace with your frontend domain
+    origin: ['http://localhost:5173', 'http://localhost:5174'], // Replace with your frontend domain
     credentials: true, // Allow credentials (cookies)
   })
 )

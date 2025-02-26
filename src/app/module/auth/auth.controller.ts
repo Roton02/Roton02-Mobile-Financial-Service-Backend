@@ -19,19 +19,22 @@ const logOut = catchAsync(async (req: Request, res: Response) => {
     httpOnly: true,
     secure: true,
     sameSite: 'none',
+    path: '/', // Ensure the correct path
   })
+
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'Logout successfully',
-    data: '',
+    data: null, // Use null instead of an empty string
   })
 })
+
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body
-  const { token } = await userServcies.loginUserIntroDb(payload)
+  const result = await userServcies.loginUserIntroDb(payload)
 
-  res.cookie('token', token, {
+  res.cookie('token', result.token, {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
     sameSite: 'none',
@@ -42,7 +45,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: 'User Login successfully',
-    data: token,
+    data: result,
   })
 })
 const verifyToken = catchAsync(async (req: Request, res: Response) => {
