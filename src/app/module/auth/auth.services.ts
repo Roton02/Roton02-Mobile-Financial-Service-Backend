@@ -45,7 +45,7 @@ const loginUserIntroDb = async (payload: ILogin) => {
     throw new AppError(401, 'User is not Found (invalid credentials)')
   }
   // console.log(UserData)
-  const verifyPassword = await bcrypt.compare(payload.pin, UserData.pin)
+const verifyPassword = await bcrypt.compare(payload.pin, UserData.pin)
 
   if (!verifyPassword) {
     throw new AppError(401, 'Invalid credentials')
@@ -59,10 +59,16 @@ const loginUserIntroDb = async (payload: ILogin) => {
   }
 
   const VerifiedUser = {
-    email: UserData.email,
     name: UserData.name,
     mobile: UserData.mobile,
+    email: UserData.email,
     accountType: UserData.accountType,
+    nid: UserData.nid,
+    balance: UserData.balance,
+    income: UserData.income,
+    isBlocked: UserData.isBlocked,
+    isDeleted: UserData.isDeleted,
+    isActive: UserData.isActive,
   }
 
   const secret = config.JWT_SECRET as string

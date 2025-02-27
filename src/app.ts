@@ -12,8 +12,12 @@ app.use(cookieParser())
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'], // Replace with your frontend domain
-    credentials: true, // Allow credentials (cookies)
+    origin: [
+      'https://flex-pay-omega.vercel.app',
+      'http://localhost:5173', // আপনার ফ্রন্টএন্ড ডোমেইন এখানে দিন
+      // অন্যান্য ডোমেইনও যদি থাকে, সেগুলিও এখানে যোগ করুন
+    ],
+    credentials: true, // কুকি বা অন্যান্য ক্রেডেনশিয়ালস পাঠানোর জন্য
   })
 )
 

@@ -24,7 +24,7 @@ UserRouter.patch(
   auth('Admin'),
   authControllers.updateAgentStatus
 )
-UserRouter.get('/users/:Number', auth('Admin'), authControllers.getSingleUsers)
+UserRouter.get('/users/:Number', authControllers.getSingleUsers)
 UserRouter.get('/users', auth('Admin'), authControllers.getUsers)
 
 export default UserRouter
