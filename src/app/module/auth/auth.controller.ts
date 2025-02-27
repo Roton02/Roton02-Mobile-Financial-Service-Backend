@@ -84,7 +84,8 @@ const getSingleUsers = catchAsync(async (req: Request, res: Response) => {
 })
 const updateAccount = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.ID
-  const result = await userServcies.updateUserIntroDB(id)
+  const payload = req.body
+  const result = await userServcies.updateUserIntroDB(id, payload)
   sendResponse(res, {
     statusCode: 201,
     success: true,

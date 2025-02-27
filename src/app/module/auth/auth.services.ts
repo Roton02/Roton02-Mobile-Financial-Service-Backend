@@ -72,10 +72,13 @@ const loginUserIntroDb = async (payload: ILogin) => {
   return { VerifiedUser, token }
 }
 
-const updateUserIntroDB = async (id: string) => {
+const updateUserIntroDB = async (
+  id: string,
+  payload: { isBlocked: boolean }
+) => {
   const result = await user.findByIdAndUpdate(
     id,
-    { isBlocked: true },
+    { isBlocked: payload.isBlocked },
     { new: true }
   )
   return result
